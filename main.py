@@ -70,7 +70,7 @@ async def on_message(message):
     if message.author == ph and message.channel == zatsudan and message.content == "はじめます":
         asyncio.create_task(hajime_process(guild,message))
         is_phalen_wakeup = True
-    if message.author == ph and message.content == re.fullmatch(r"(ぼく|僕|俺|オレ)\s*(?:は\s*)?(?:[1-9]|1[0-7]|[１-９]|１[０-７])(才|歳|さい)(?:です|だよ)?") :
+    if message.author == ph and re.fullmatch(r"(ぼく|僕|俺|オレ)\s*(?:は\s*)?(?:[1-9]|1[0-7]|[１-９]|１[０-７])(才|歳|さい)(?:です|だよ)?",message.content) :
         try:
             await message.delete()
             await message.channel.send("うそつけ")
@@ -92,7 +92,7 @@ async def send_msg(mes,channel_id:int): # メッセージを送れる汎用関�
 
 def can_notify():
     now = datetime.datetime.now(JST)
-    return now.weekday() in [1,2,4,5,6] and not is_phalen_wakeup
+    return now.weekday() in {1,2,4,5,6} and not is_phalen_wakeup
 
 @tasks.loop(time=datetime.time(hour=21, minute=30,tzinfo=JST))
 async def notify_early():
@@ -141,6 +141,7 @@ async def intro_ph(inter: discord.Interaction,mode: Literal["Youtube", "X", "Twi
 
 keep_alive()
 client.run(TOKEN)
+
 
 
 
