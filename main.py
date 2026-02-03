@@ -71,7 +71,7 @@ async def on_message(message):
     if message.author == ph and message.channel == zatsudan and message.content == "はじめます":
         asyncio.create_task(hajime_process(guild,message))
         is_phalen_wakeup = True
-    if message.author == ph and message.content == re.fullmatch(r"(ぼく|僕|俺|オレ)\s*(?:は\s*)?(?:[1-9]|1[0-2]|[１-９]|１[０-２])(才|歳|さい)(?:です|だよ)?") :
+    if message.author == ph and message.content == re.fullmatch(r"(ぼく|僕|俺|オレ)\s*(?:は\s*)?(?:[1-9]|1[0-7]|[１-９]|１[０-７])(才|歳|さい)(?:です|だよ)?") :
         try:
             await message.delete()
             await message.channel.send("うそつけ")
@@ -142,3 +142,4 @@ async def intro_ph(inter: discord.Interaction,mode: Literal["Youtube", "X", "Twi
 
 keep_alive()
 client.run(TOKEN)
+
