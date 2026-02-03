@@ -21,3 +21,4 @@ googleapis-common-protos==1.70.0
 yfinance
 pytchat
 re
+zoneinfo
