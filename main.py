@@ -16,6 +16,10 @@ from googleapiclient.errors import HttpError
 import datetime
 from discord.ext import tasks
 import re
+from zoneinfo import ZoneInfo
+
+JST = ZoneInfo("Asia/Tokyo")
+
 dotenv.load_dotenv()
 
 TOKEN = os.getenv("token")
@@ -92,21 +96,21 @@ async def send_msg(mes,channel_id:int): # メッセージを送れる汎用関�
         print(f"exception error : {e}")
 
 def can_notify():
-    now = datetime.datetime.now()
+    now = datetime.datetime.now(JST)
     return now.weekday() in [1,2,4,5,6] and not is_phalen_wakeup
 
-@tasks.loop(time=datetime.time(hour=21, minute=30))
+@tasks.loop(time=datetime.time(hour=21, minute=30,tzinfo=JST))
 async def notify_early():
     if can_notify():
         await send_msg(
             "21:30です。配信の調子はいかがでしょうか。 <@1018781055215468624>",1456890395970768951)
-@tasks.loop(time=datetime.time(hour=22, minute=0))
+@tasks.loop(time=datetime.time(hour=22, minute=0,tzinfo=JST))
 async def notify_late():
     if can_notify():
         await send_msg(
             "22:00です。配信の時刻としては理想的でしょう。 <@1018781055215468624>",1456890395970768951)
 
-@tasks.loop(time=datetime.time(hour=2, minute=0))
+@tasks.loop(time=datetime.time(hour=2, minute=0,tzinfo=JST))
 async def reset_alarm_task():
     global is_phalen_wakeup
     is_phalen_wakeup = False
@@ -142,4 +146,5 @@ async def intro_ph(inter: discord.Interaction,mode: Literal["Youtube", "X", "Twi
 
 keep_alive()
 client.run(TOKEN)
+
 
