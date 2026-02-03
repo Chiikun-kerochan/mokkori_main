@@ -7,12 +7,7 @@ import time
 import asyncio
 from typing import Literal
 import aiohttp
-from google import genai
-from apiclient import discovery
-from httplib2 import Http
-# 💡 サービスアカウント認証用のモジュールに変更
 from oauth2client import service_account
-from googleapiclient.errors import HttpError
 import datetime
 from discord.ext import tasks
 import re
@@ -146,5 +141,6 @@ async def intro_ph(inter: discord.Interaction,mode: Literal["Youtube", "X", "Twi
 
 keep_alive()
 client.run(TOKEN)
+
 
 
